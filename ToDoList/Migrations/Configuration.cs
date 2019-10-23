@@ -4,6 +4,9 @@ namespace ToDoList.Migrations
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using ToDoList.Models;
 
     internal sealed class Configuration : DbMigrationsConfiguration<ToDoList.Models.ApplicationDbContext>
     {
@@ -18,6 +21,14 @@ namespace ToDoList.Migrations
 
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
             //  to avoid creating duplicate seed data.
+            AddUsers(context);
+        }
+
+        void AddUsers(ToDoList.Models.ApplicationDbContext context)
+        {
+            var user = new ApplicationUser { UserName = "user@email.com" };
+            var um = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            um.Create(user, "password");
         }
     }
 }
